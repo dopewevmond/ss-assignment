@@ -24,8 +24,8 @@ export const LoginHandler = async (
       email: userEmail
     } = await login(email, password)
     const token = createJWT({ id, role })
-    res.cookie(CookieKey, token, { httpOnly: true })
-    let response: any = { role, firstname, email: userEmail }
+    res.cookie(CookieKey, token, { httpOnly: true, sameSite: 'none', secure: true })
+    let response: any = { id, role, firstname, email: userEmail }
     if (role === 'admin') {
       response = { ...response, embedUrl: getEmbedUrl() }
     }
@@ -50,8 +50,8 @@ export const SignUpHandler = async (
       email: userEmail
     } = await signup(email, password, firstname, lastname, phonenumber, gender)
     const token = createJWT({ id, role })
-    res.cookie(CookieKey, token, { httpOnly: true })
-    res.json({ role, firstname: userFirstname, email: userEmail })
+    res.cookie(CookieKey, token, { httpOnly: true, sameSite: 'none', secure: true })
+    res.json({ id, role, firstname: userFirstname, email: userEmail })
   } catch (err) {
     next(err)
   }
@@ -99,4 +99,41 @@ export const EditPersonalRecordsHandler = async (
   } catch (err) {
     next(err)
   }
+}
+
+export const GetEmbedUrlHandler = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    if (res.locals.user.role !== 'admin') {
+      next(new HttpException(401, 'Unauthorized'))
+      return
+    }
+    res.json({ embedUrl: getEmbedUrl() })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const LogoutHandler = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    res.clearCookie(CookieKey)
+    res.json({ message: 'Successfully logged out' })
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const PingAuthHandler = async (
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> => {
+  res.sendStatus(200)
 }

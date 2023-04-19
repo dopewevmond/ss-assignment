@@ -10,7 +10,9 @@ export const loginValidationSchema = object({
 
 export const signupValidationSchema = object({
   body: object({
-    email: string().required('An email is required to sign up'),
+    email: string()
+      .email('Please use a valid email address')
+      .required('An email is required to sign up'),
     password: string().required('A password is required to sign up'),
     firstname: string().required('First name is required to sign up'),
     lastname: string().required('Last name is required to sign up'),

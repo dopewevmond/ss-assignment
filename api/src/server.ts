@@ -3,6 +3,7 @@ import * as express from 'express'
 import * as dotenv from 'dotenv'
 import * as morgan from 'morgan'
 import * as bodyParser from 'body-parser'
+import * as cors from 'cors'
 import * as cookieParser from 'cookie-parser'
 import sharedAppEmitter from './emitter'
 import { type AppEvents } from './types'
@@ -12,8 +13,9 @@ import { authRouter, userRouter } from './routers'
 dotenv.config()
 
 const app = express()
-app.use(bodyParser.json())
+app.use(cors())
 app.use(cookieParser())
+app.use(bodyParser.json())
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 
 app.get('/', (_req: Request, res: Response) => {
