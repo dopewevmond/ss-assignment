@@ -24,8 +24,7 @@ export const LoginHandler = async (
       email: userEmail
     } = await login(email, password)
     const token = createJWT({ id, role })
-    res.cookie(CookieKey, token, { httpOnly: true, sameSite: 'none', secure: true })
-    let response: any = { id, role, firstname, email: userEmail }
+    let response: any = { token, id, role, firstname, email: userEmail }
     if (role === 'admin') {
       response = { ...response, embedUrl: getEmbedUrl() }
     }
@@ -50,8 +49,7 @@ export const SignUpHandler = async (
       email: userEmail
     } = await signup(email, password, firstname, lastname, phonenumber, gender)
     const token = createJWT({ id, role })
-    res.cookie(CookieKey, token, { httpOnly: true, sameSite: 'none', secure: true })
-    res.json({ id, role, firstname: userFirstname, email: userEmail })
+    res.json({ token, id, role, firstname: userFirstname, email: userEmail })
   } catch (err) {
     next(err)
   }
