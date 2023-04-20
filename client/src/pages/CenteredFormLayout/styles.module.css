@@ -1,0 +1,52 @@
+.rootElement {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+.parentContainer {
+  width: 100%;
+}
+.formContainer {
+  width: 95%;
+  margin: 0 auto;
+  background-color: var(--secondary-background-color);
+  border-radius: 0.5rem;
+}
+
+/* small */
+@media (min-width: 576px) {
+  .formContainer {
+    max-width: 540px;
+  }
+}
+
+/* medium */
+@media (min-width: 768px) {
+  .formContainer {
+    max-width: 28rem;
+  }
+}
+
+/* large */
+@media (min-width: 992px) {
+  /* .formContainer {
+    max-width: 960px;
+  } */
+}
+
+/* extra large */
+@media (min-width: 1200px) {
+  /* .formContainer {
+    max-width: 1140px;
+  } */
+}
+
+/* 2xl */
+@media (min-width: 1400px) {
+  /* .formContainer {
+    max-width: 1320px;
+  } */
+}

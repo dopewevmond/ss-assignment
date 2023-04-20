@@ -1,0 +1,49 @@
+:root {
+  --sidebar-rounding-radius: 1rem;
+  --primary-background-color: white;
+  --secondary-background-color: #f1f1f1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* small */
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+/* medium */
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+/* large */
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+/* extra large */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+/* 2xl */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}

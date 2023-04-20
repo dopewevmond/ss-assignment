@@ -1,0 +1,143 @@
+.rootContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+}
+
+.panelContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--primary-background-color);
+}
+
+.rightPanel {
+  padding: 1rem;
+  height: 100%;
+}
+
+.sidebar {
+  height: 4rem;
+  position: fixed;
+  bottom: 0;
+  background-color: var(--secondary-background-color);
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.iconButton {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  flex: 1 1 0;
+  cursor: pointer;
+  /* color: white; */
+}
+.sidebarButtonText {
+  display: none;
+}
+
+.paddingAround {
+  padding: 1rem;
+}
+.notFullyWide {
+  width: 100%;
+  max-width: 30rem;
+}
+
+.twoColsLargeScreens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.twoColsLargeScreens > * {
+  flex-basis: 100%;
+}
+.fullWidth {
+  width: 100%;
+}
+.flexRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+
+@media (min-width: 576px) {
+}
+
+/* medium */
+@media (min-width: 768px) {
+  .panelContainer {
+    flex-direction: row-reverse;
+  }
+  .sidebar {
+    position: relative;
+    z-index: 1;
+    width: 20%;
+    height: 100%;
+    display: block;
+  }
+  .rightPanel {
+    flex: 1 1 0;
+  }
+  .sidebarButtonText {
+    display: inline;
+    font-size: 1rem;
+  }
+  .iconButton {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 1rem;
+    padding: 0;
+    padding-left: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+    background-color: var(--secondary-background-color);
+  }
+  .iconButton::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    background-color: var(--primary-background-color);
+    z-index: -1;
+  }
+  .activeIconButton {
+    background-color: var(--primary-background-color);
+  }
+  .iconButton:has(+ .activeIconButton) {
+    border-radius: 0 0 var(--sidebar-rounding-radius) 0;
+  }
+  .activeIconButton + .iconButton {
+    border-radius: 0 var(--sidebar-rounding-radius) 0 0;
+  }
+
+  .twoColsLargeScreens > * {
+    flex-basis: 48%;
+  }
+  .wider {
+    flex-basis: 60%;
+  }
+  .thinner {
+    flex-basis: 35%;
+  }
+}
+
+/* large */
+@media (min-width: 992px) {
+}
+
+/* extra large */
+@media (min-width: 1200px) {
+}
+
+/* 2xl */
+@media (min-width: 1400px) {
+}

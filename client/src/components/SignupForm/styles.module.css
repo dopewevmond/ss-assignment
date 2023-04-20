@@ -1,0 +1,27 @@
+.parentContainer {
+  width: 100%;
+  padding: 2rem;
+}
+.twoColsLargeScreens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.twoColsLargeScreens > * {
+  flex-basis: 100%;
+}
+.fullWidth {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .twoColsLargeScreens > * {
+    flex-basis: 48%;
+  }
+  .wider {
+    flex-basis: 60%;
+  }
+  .thinner {
+    flex-basis: 35%;
+  }
+}
