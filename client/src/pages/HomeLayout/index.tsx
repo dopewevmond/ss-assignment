@@ -25,6 +25,7 @@ import {
   selectUserId,
   updateProfile as updateProfileThunk,
 } from "../../redux/userSlice";
+import { Helmet } from "react-helmet";
 
 const links = [
   {
@@ -94,6 +95,9 @@ const HomeLayout = () => {
 
   return (
     <div className={styles.rootContainer}>
+      <Helmet>
+        <title>Self-service customer portal</title>
+      </Helmet>
       <Navbar navbarHeading="Self Service Portal" />
       <div className={styles.panelContainer}>
         <div className={styles.rightPanel}>

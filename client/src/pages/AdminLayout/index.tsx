@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { refreshEmbedUrl, selectEmbedUrl } from "../../redux/userSlice";
 import jwt_decode from "jwt-decode";
+import { Helmet } from "react-helmet";
 
 const AdminLayout = () => {
   const links = [
@@ -44,6 +45,9 @@ const AdminLayout = () => {
 
   return (
     <div className={styles.rootContainer}>
+      <Helmet>
+        <title>Admin Dashboard</title>
+      </Helmet>
       <Navbar navbarHeading="Staff Portal" />
       <div className={styles.panelContainer}>
         <div className={styles.rightPanel}>
