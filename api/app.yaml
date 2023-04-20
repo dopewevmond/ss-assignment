@@ -1,0 +1,6 @@
+runtime: nodejs16
+
+env_variables:
+  JWT_SECRET: <jwt_secret>
+  DATABASE_URL: <database_url>
+  METABASE_SECRET_KEY: <metabase_secret_key>
