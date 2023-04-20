@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken'
 
-const METABASE_SITE_URL = 'http://34.175.240.252:3000'
+const METABASE_SITE_URL = 'https://wevs.metabaseapp.com'
 const METABASE_SECRET_KEY = process.env.METABASE_SECRET_KEY
 
 const payload = {
