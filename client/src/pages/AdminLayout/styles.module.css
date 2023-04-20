@@ -38,7 +38,19 @@
 .sidebarButtonText {
   display: none;
 }
-
+.flexRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
+  gap: 0.5rem;
+}
+.sfDisplay {
+  font-family: "SF UI Display", sans-serif;
+  font-size: 1.2rem;
+  color: grey;
+  /* font-weight: bold; */
+}
 @media (min-width: 576px) {
 }
 

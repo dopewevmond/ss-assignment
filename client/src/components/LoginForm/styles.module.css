@@ -1,4 +1,9 @@
 .parentContainer {
   width: 100%;
-  padding: 2rem;
+  padding: 1rem;
+}
+@media (min-width: 768px) {
+  .parentContainer {
+    padding: 2rem;
+  }
 }

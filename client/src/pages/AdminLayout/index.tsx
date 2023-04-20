@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { ChartIcon, CogIcon, DocumentIcon } from "evergreen-ui";
+import React, { useEffect, useState } from "react";
+import { ChartIcon, CogIcon, DocumentIcon, Spinner } from "evergreen-ui";
 import styles from "./styles.module.css";
 import Navbar from "../../components/Navbar";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -8,6 +8,7 @@ import jwt_decode from "jwt-decode";
 import { Helmet } from "react-helmet";
 
 const AdminLayout = () => {
+  const [hasIframeLoaded, setIframeLoaded] = useState(false);
   const links = [
     {
       icon: <ChartIcon size={20} />,
@@ -51,7 +52,18 @@ const AdminLayout = () => {
       <Navbar navbarHeading="Staff Portal" />
       <div className={styles.panelContainer}>
         <div className={styles.rightPanel}>
-          <iframe src={String(embedUrl)} width="100%" height="100%" />
+          {!hasIframeLoaded && (
+            <div className={styles.flexRow}>
+              <Spinner size={32} />
+              <p className={styles.sfDisplay}>Loading dashboard...</p>
+            </div>
+          )}
+          <iframe
+            src={String(embedUrl)}
+            width="100%"
+            height="100%"
+            onLoad={() => setIframeLoaded(true)}
+          />
         </div>
         <div className={styles.sidebar}>
           {links.map(({ icon, name }, idx) => (
