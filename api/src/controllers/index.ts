@@ -1,16 +1,14 @@
 import type { Request, Response, NextFunction } from 'express'
-import { CookieKey } from '../types'
 import HttpException from '../exceptions'
 import {
-  getUserDetails,
-  login,
-  signup,
+  loginAdmin,
+  loginCustomer,
   updateUserRecord,
   createJWT,
   getEmbedUrl
 } from '../services'
 
-export const LoginHandler = async (
+export const AdminLoginHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -22,56 +20,85 @@ export const LoginHandler = async (
       role,
       firstname,
       email: userEmail
-    } = await login(email, password)
+    } = await loginAdmin(email, password)
     const token = createJWT({ id, role })
-    let response: any = { token, id, role, firstname, email: userEmail }
-    if (role === 'admin') {
-      response = { ...response, embedUrl: getEmbedUrl() }
-    }
-    res.json(response)
-  } catch (err) {
-    next(err)
-  }
-}
-
-export const SignUpHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const { email, password, firstname, lastname, phonenumber, gender } =
-      req.body
-    const {
+    res.json({
+      token,
       id,
       role,
-      firstname: userFirstname,
-      email: userEmail
-    } = await signup(email, password, firstname, lastname, phonenumber, gender)
-    const token = createJWT({ id, role })
-    res.json({ token, id, role, firstname: userFirstname, email: userEmail })
+      firstname,
+      email: userEmail,
+      embedUrl: getEmbedUrl()
+    })
   } catch (err) {
     next(err)
   }
 }
 
-export const GetUserByIdHandler = async (
+export const CustomerLoginHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params
-    if (res.locals.user.id !== id) {
-      next(new HttpException(401, 'Unauthorized'))
-      return
-    }
-    const data = await getUserDetails(id)
-    res.json(data)
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { client_number } = req.body
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { client_name, mobile, email, gender } = await loginCustomer(
+      client_number
+    )
+    const token = createJWT({ id: client_number, role: 'customer' })
+    res.json({
+      client_number,
+      mobile,
+      email,
+      gender,
+      client_name,
+      token
+    })
   } catch (err) {
     next(err)
   }
 }
+
+// export const SignUpHandler = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ): Promise<void> => {
+//   try {
+//     const { email, password, firstname, lastname, phonenumber, gender } =
+//       req.body
+//     const {
+//       id,
+//       role,
+//       firstname: userFirstname,
+//       email: userEmail
+//     } = await signup(email, password, firstname, lastname, phonenumber, gender)
+//     const token = createJWT({ id, role })
+//     res.json({ token, id, role, firstname: userFirstname, email: userEmail })
+//   } catch (err) {
+//     next(err)
+//   }
+// }
+
+// export const GetUserByIdHandler = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ): Promise<void> => {
+//   try {
+//     const { id } = req.params
+//     if (res.locals.user.id !== id) {
+//       next(new HttpException(401, 'Unauthorized'))
+//       return
+//     }
+//     const data = await getUserDetails(id)
+//     res.json(data)
+//   } catch (err) {
+//     next(err)
+//   }
+// }
 
 export const EditPersonalRecordsHandler = async (
   req: Request,
@@ -79,17 +106,18 @@ export const EditPersonalRecordsHandler = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params
-    if (res.locals.user.id !== id) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { client_number } = req.params
+    if (res.locals.user.id !== client_number) {
       next(new HttpException(401, 'Unauthorized'))
       return
     }
-    const { firstname, lastname, phonenumber, email, gender } = req.body
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { client_name, mobile, email, gender } = req.body
     const data = await updateUserRecord({
-      id,
-      phonenumber,
-      firstname,
-      lastname,
+      client_number,
+      mobile,
+      client_name,
       email,
       gender
     })
@@ -113,25 +141,4 @@ export const GetEmbedUrlHandler = async (
   } catch (err) {
     next(err)
   }
-}
-
-export const LogoutHandler = async (
-  _req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    res.clearCookie(CookieKey)
-    res.json({ message: 'Successfully logged out' })
-  } catch (err) {
-    next(err)
-  }
-}
-
-export const PingAuthHandler = async (
-  _req: Request,
-  res: Response,
-  _next: NextFunction
-): Promise<void> => {
-  res.sendStatus(200)
 }
