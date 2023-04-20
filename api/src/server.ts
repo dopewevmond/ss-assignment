@@ -16,7 +16,7 @@ const app = express()
 app.use(cors())
 app.use(cookieParser())
 app.use(bodyParser.json())
-if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
+app.use(morgan('dev'))
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('health check passed')
