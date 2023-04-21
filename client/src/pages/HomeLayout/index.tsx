@@ -25,7 +25,7 @@ const HomeLayout = () => {
   const mobile = useAppSelector(selectMobile);
   const gender = useAppSelector(selectGender);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
-  const client_number = useAppSelector(selectClientNumber)
+  const client_number = useAppSelector(selectClientNumber);
 
   const dispatch = useAppDispatch();
 
@@ -44,14 +44,14 @@ const HomeLayout = () => {
         setSubmitting(false);
         return;
       }
-      await dispatch(updateProfile({ ...values, client_number }))
+      await dispatch(updateProfile({ ...values, client_number }));
       setSubmitting(false);
     },
   });
 
   return (
     <>
-      {!isLoggedIn ? (
+      {!isLoggedIn || client_name == null ? (
         <Navigate to="login" replace={true} />
       ) : (
         <>

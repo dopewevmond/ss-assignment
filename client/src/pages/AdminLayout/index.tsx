@@ -42,7 +42,7 @@ const AdminLayout = () => {
 
   return (
     <>
-      {!isLoggedIn ? (
+      {!isLoggedIn || firstName == null ? (
         <Navigate to="/admin/login" replace />
       ) : (
         <div>
