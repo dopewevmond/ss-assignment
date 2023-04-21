@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { ChartIcon, CogIcon, DocumentIcon, Spinner } from "evergreen-ui";
+import { Spinner } from "evergreen-ui";
 import styles from "./styles.module.css";
 import Navbar from "../../components/Navbar";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { refreshEmbedUrl, selectEmbedUrl } from "../../redux/userSlice";
 import jwt_decode from "jwt-decode";
 import { Helmet } from "react-helmet";
+import {
+  logout,
+  refreshEmbedUrl,
+  selectEmail,
+  selectEmbedUrl,
+  selectFirstName,
+  selectIsLoggedIn,
+} from "../../redux/adminSlice";
+import { Navigate } from "react-router-dom";
 
 const AdminLayout = () => {
   const [hasIframeLoaded, setIframeLoaded] = useState(false);
-  const links = [
-    {
-      icon: <ChartIcon size={20} />,
-      name: "Dashboard",
-    },
-    {
-      icon: <DocumentIcon size={20} />,
-      name: "Reports",
-    },
-    {
-      icon: <CogIcon size={20} />,
-      name: "Settings",
-    },
-  ];
-
   const embedUrl = useAppSelector(selectEmbedUrl);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const email = useAppSelector(selectEmail);
+  const firstName = useAppSelector(selectFirstName);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -45,40 +41,43 @@ const AdminLayout = () => {
   }, [embedUrl]);
 
   return (
-    <div className={styles.rootContainer}>
-      <Helmet>
-        <title>Admin Dashboard</title>
-      </Helmet>
-      <Navbar navbarHeading="Staff Portal" />
-      <div className={styles.panelContainer}>
-        <div className={styles.rightPanel}>
-          {!hasIframeLoaded && (
-            <div className={styles.flexRow}>
-              <Spinner size={32} />
-              <p className={styles.sfDisplay}>Loading dashboard...</p>
+    <>
+      {!isLoggedIn ? (
+        <Navigate to="/admin/login" replace />
+      ) : (
+        <div>
+          <Helmet>
+            <title>Admin Dashboard</title>
+          </Helmet>
+
+          <div className="flex-column-full-height">
+            <Navbar
+              navbarHeading="Staff Portal"
+              email={String(email)}
+              name={String(firstName)}
+              logoutFunction={() => dispatch(logout())}
+            />
+
+            <div className="flex-fill-space">
+              <div className="container full-height padding-around-vertically">
+                {!hasIframeLoaded && (
+                  <div className={styles.flexRow}>
+                    <Spinner size={32} />
+                    <p className={styles.sfDisplay}>Loading dashboard...</p>
+                  </div>
+                )}
+
+                <iframe
+                  src={String(embedUrl)}
+                  className="iframe-styles"
+                  onLoad={() => setIframeLoaded(true)}
+                />
+              </div>
             </div>
-          )}
-          <iframe
-            src={String(embedUrl)}
-            width="100%"
-            height="100%"
-            onLoad={() => setIframeLoaded(true)}
-          />
+          </div>
         </div>
-        <div className={styles.sidebar}>
-          {links.map(({ icon, name }, idx) => (
-            <button
-              key={name}
-              className={`${idx === 0 ? styles.activeIconButton : ""} ${
-                styles.iconButton
-              }`}
-            >
-              {icon} <span className={styles.sidebarButtonText}>{name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

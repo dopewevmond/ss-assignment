@@ -1,65 +1,44 @@
 import { useRoutes } from "react-router-dom";
-import CenteredFormLayout from "./pages/CenteredFormLayout";
 import HomeLayout from "./pages/HomeLayout";
-import LoginForm from "./components/LoginForm";
-import SignupForm from "./components/SignupForm";
-import AuthGuard from "./components/AuthGuard";
-import AdminGuard from "./components/AdminGuard";
+import CenteredFormLayout from "./pages/CenteredFormLayout";
+import CustomerLoginForm from "./components/CustomerLoginForm";
+import AdminLoginForm from "./components/AdminLoginForm";
 import AdminLayout from "./pages/AdminLayout";
-import CustomerGuard from "./components/CustomerGuard";
+
+const CustomerLoginPage = () => (
+  <CenteredFormLayout
+    heading="Self-service Portal"
+    title="Self-service Portal - Login"
+  >
+    <CustomerLoginForm />
+  </CenteredFormLayout>
+);
+
+const AdminLoginPage = () => (
+  <CenteredFormLayout
+    heading="Staff Dashboard Login"
+    title="Staff Dashboard - Login"
+  >
+    <AdminLoginForm />
+  </CenteredFormLayout>
+);
 
 export const Router = () =>
   useRoutes([
     {
-      path: "/login",
-      element: <CenteredFormLayout heading="Customer Self-Service Portal" />,
-      children: [
-        {
-          index: true,
-          element: <LoginForm title="Log in" />,
-        },
-      ],
+      path: "/",
+      element: <HomeLayout />,
     },
     {
-      path: "/signup",
-      element: <CenteredFormLayout heading="Customer Self-Service Portal" />,
-      children: [
-        {
-          index: true,
-          element: <SignupForm />,
-        },
-      ],
+      path: "/login",
+      element: <CustomerLoginPage />,
+    },
+    {
+      path: "/admin/login",
+      element: <AdminLoginPage />,
     },
     {
       path: "/admin",
-      element: <AuthGuard />,
-      children: [
-        {
-          path: "/admin",
-          element: <AdminGuard />,
-          children: [
-            {
-              element: <AdminLayout />,
-              index: true,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      path: "/",
-      element: <AuthGuard />,
-      children: [
-        {
-          path: "/",
-          element: <CustomerGuard />,
-          children: [
-            {
-              element: <HomeLayout />,
-              index: true,
-            },
-          ],
-        },
-      ],
+      element: <AdminLayout />,
     },
   ]);

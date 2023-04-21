@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
-import authSliceReducer from "./userSlice";
+import customerReducer from "./customerSlice";
+import adminReducer from "./adminSlice";
 import createSagaMiddleware from "redux-saga";
 import userSaga from "./sagas";
 
@@ -8,7 +9,8 @@ const saga = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
-    auth: authSliceReducer,
+    customer: customerReducer,
+    admin: adminReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(saga),
 });

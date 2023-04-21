@@ -1,32 +1,35 @@
 import React, { FC } from "react";
 import styles from "./styles.module.css";
-import { TextInputField, Button, Heading, Text } from "evergreen-ui";
-import { loginSchema } from "../../lib/validators";
+import { TextInputField, Button, Heading } from "evergreen-ui";
 import { useFormik } from "formik";
-import { LoginCredentials } from "../../types";
-import { useLogin, useRedirect } from "../../shared/hooks";
-import { Link } from "react-router-dom";
+import { AdminLoginCredentials } from "../../types";
+import { adminLoginSchema } from "../../lib/validators";
+import { useRedirectOnLoginPages } from "../../shared/hooks";
+import { useAppDispatch } from "../../redux/store";
+import { login } from "../../redux/adminSlice";
 
-const initialFormValues: LoginCredentials = {
+const initialFormValues: AdminLoginCredentials = {
   email: "",
   password: "",
 };
 
-const LoginForm: FC<{ title: string }> = ({ title }) => {
-  useRedirect();
-  const { login } = useLogin();
+const AdminLoginForm = () => {
+  useRedirectOnLoginPages();
+  const dispatch = useAppDispatch();
+
   const formik = useFormik({
     initialValues: initialFormValues,
-    validationSchema: loginSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      login(values, setSubmitting);
+    validationSchema: adminLoginSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      await dispatch(login(values));
+      setSubmitting(false);
     },
   });
 
   return (
     <div className={styles.parentContainer}>
       <Heading size={700} color="#0E3D85" marginBottom="1rem">
-        {title}
+        Admin Login
       </Heading>
       <form onSubmit={formik.handleSubmit}>
         <TextInputField
@@ -57,10 +60,8 @@ const LoginForm: FC<{ title: string }> = ({ title }) => {
           Log in
         </Button>
       </form>
-
-      <Text display="block" marginTop="1rem">Don&apos;t have an account? <Link to='/signup'>Sign up</Link></Text>
     </div>
   );
 };
 
-export default LoginForm;
+export default AdminLoginForm;

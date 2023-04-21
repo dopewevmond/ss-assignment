@@ -10,16 +10,13 @@ import {
   Menu,
   LogOutIcon,
 } from "evergreen-ui";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { logout, selectEmail, selectFirstname } from "../../redux/userSlice";
 
 const Navbar: FC<{
   navbarHeading: string;
-}> = ({ navbarHeading }) => {
-  const firstName = useAppSelector(selectFirstname);
-  const email = useAppSelector(selectEmail);
-  const dispatch = useAppDispatch();
-
+  email: string;
+  name: string;
+  logoutFunction: () => void;
+}> = ({ navbarHeading, name, email, logoutFunction }) => {
   return (
     <Pane padding={16} background="#F5F5F5">
       <div className="container">
@@ -36,7 +33,7 @@ const Navbar: FC<{
                 <Pane>
                   <Pane background="tint1" padding={majorScale(2)}>
                     <Pane>
-                      <Text>{firstName}</Text>
+                      <Text>{name}</Text>
                     </Pane>
                     <Pane>
                       <Text color="muted">{email}</Text>
@@ -47,9 +44,7 @@ const Navbar: FC<{
                       <Menu.Item
                         icon={LogOutIcon}
                         intent="danger"
-                        onSelect={() => {
-                          dispatch(logout())
-                        }}
+                        onSelect={logoutFunction}
                       >
                         Sign out
                       </Menu.Item>
@@ -66,7 +61,7 @@ const Navbar: FC<{
                 alignItems="center"
                 justifyContent="center"
               >
-                <Avatar name={firstName} size={48} cursor="pointer" />
+                <Avatar name={name} size={48} cursor="pointer" />
               </Pane>
             </Popover>
           </Pane>

@@ -1,24 +1,24 @@
 import { takeEvery, call } from "redux-saga/effects";
 import { toaster } from "evergreen-ui";
 import {
-  login as loginthunk,
-  signup as signupthunk,
-  refreshEmbedUrl as refreshThunk,
+  login as customerloginthunk,
   updateProfile as updateProfileThunk,
-} from "./userSlice";
+} from "./customerSlice";
+import { login as adminloginthunk, refreshEmbedUrl } from "./adminSlice";
 
 function* handleThunkFailed(action: any) {
   yield call(toaster.danger, action.payload);
 }
 
 function* handleUpdateProfileSuccess(action: any) {
-  yield call(toaster.success, 'Your profile was updated successfully')
+  yield call(toaster.success, "Your profile was updated successfully");
 }
 
 function* watchThunks() {
-  yield takeEvery(loginthunk.rejected, handleThunkFailed);
-  yield takeEvery(signupthunk.rejected, handleThunkFailed);
-  yield takeEvery(refreshThunk.rejected, handleThunkFailed);
+  yield takeEvery(customerloginthunk.rejected, handleThunkFailed);
+  yield takeEvery(adminloginthunk.rejected, handleThunkFailed);
+  yield takeEvery(updateProfileThunk.rejected, handleThunkFailed);
+  yield takeEvery(refreshEmbedUrl.rejected, handleThunkFailed);
   yield takeEvery(updateProfileThunk.fulfilled, handleUpdateProfileSuccess);
 }
 
