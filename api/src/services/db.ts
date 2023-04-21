@@ -28,7 +28,7 @@ export const loginAdmin = async (
 
 export const loginCustomer = async (clientNumber: string): Promise<EditablePatientRecord> => {
   const query: QueryConfig = {
-    text: 'SELECT client_number, mobile, email, gender FROM test.patient_record WHERE client_number = $1 LIMIT 1',
+    text: 'SELECT client_number, client_name, mobile, email, gender FROM test.patient_record WHERE client_number = $1 LIMIT 1',
     values: [clientNumber]
   }
   const { rows } = await datasource.query<EditablePatientRecord>(query)

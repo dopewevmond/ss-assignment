@@ -10,7 +10,7 @@ export const adminLoginValidationSchema = object({
 
 export const customerLoginValidationSchema = object({
   body: object({
-    clientNumber: string().required('Client number is required to log in')
+    client_number: string().required('Client number is required to log in')
   })
 })
 
@@ -35,7 +35,6 @@ export const updateProfileValidationSchema = object({
   body: object({
     client_name: string().required('Name field cannot be empty'),
     mobile: string()
-      .matches(/^[0-9]+$/, 'Mobile number must contain only numbers')
       .required('Mobile number field cannot be empty'),
     email: string()
       .email('Please use a valid email address')

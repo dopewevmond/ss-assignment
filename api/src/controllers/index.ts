@@ -107,7 +107,7 @@ export const EditPersonalRecordsHandler = async (
 ): Promise<void> => {
   try {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { client_number } = req.params
+    const { id: client_number } = req.params
     if (res.locals.user.id !== client_number) {
       next(new HttpException(401, 'Unauthorized'))
       return
